@@ -1,7 +1,15 @@
 <html>
 <head>
 <script>
-window.addEventListener("message", function(e){eval("("+e.data.code+")")(e)})
+var params = window.location.search.substring(1).split('&');
+var lockOrigin;
+for (var i = 0; i < params.length; ++i) {
+    var parts = params[i].split('=');
+    if (parts[0] == 'origin') lockOrigin = decodeURIComponent(parts[1]);
+}
+window.onmessage=function(e){
+    if (lockOrigin && event.origin === lockOrigin) eval("("+e.data.code+")")(e);
+}
 </script>
 </head>
 <body></body>
